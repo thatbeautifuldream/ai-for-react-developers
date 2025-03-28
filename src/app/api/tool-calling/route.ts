@@ -14,11 +14,12 @@ Always cite your sources when providing information from web searches.
 Keep your responses concise and focused on the user's query.`,
     tools: {
       web_search_preview: openai.tools.webSearchPreview({
-        searchContextSize: "high",
+        searchContextSize: "medium",
         userLocation: {
           type: "approximate",
-          city: "Bangalore, Karnataka",
-          region: "India",
+          country: "IN",
+          region: "Karnataka",
+          city: "Bangalore",
         },
       }),
     },
