@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI for React Developers
 
-## Getting Started
+This project is a modern Next.js application that demonstrates AI integration and best practices for React developers. It showcases various AI-powered features and tools using the latest web technologies.
 
-First, run the development server:
+## Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Tech Stack
+
+- **Framework**: Next.js 15.2.4 with React 19
+- **Styling**: TailwindCSS with custom animations
+- **AI Integration**: OpenAI SDK integration (@ai-sdk/openai, @ai-sdk/react)
+- **UI Components**:
+  - Radix UI primitives for accessible components
+  - Framer Motion for animations
+  - Lucide React for icons
+- **Type Safety**: TypeScript with Zod for schema validation
+
+### Key Features
+
+- **Chat Interface**: Real-time AI chat functionality
+- **Tool Calling**: Demonstration of AI tool integration
+- **Object Usage Examples**: Showcases object manipulation with AI
+- **Modern UI**: Responsive design with Tailwind CSS
+- **API Routes**: Backend API implementation in Next.js
+
+### Detailed Project Structure
+
+```
+src/
+├── app/                    # Next.js app router pages
+│   ├── chat/              # Chat feature implementation
+│   ├── tool-calling/      # AI tool calling examples
+│   ├── use-object/        # Object usage demonstrations
+│   └── api/               # API routes
+│       ├── chat/          # Chat-related API endpoints
+│       ├── tool-calling/  # Tool integration endpoints
+│       └── use-object/    # Object manipulation endpoints
+├── components/            # Reusable React components
+│   ├── ui/               # Core UI components
+│   │   ├── avatar.tsx    # User avatar component
+│   │   ├── button.tsx    # Custom button component
+│   │   ├── card.tsx      # Card container component
+│   │   ├── input.tsx     # Form input component
+│   │   ├── scroll-area.tsx # Custom scrollable area
+│   │   └── separator.tsx   # Visual separator component
+│   └── chat/             # Chat-specific components
+└── lib/                  # Utility functions and shared logic
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### API Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application features three main API categories:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Chat API** (`/api/chat`)
 
-## Learn More
+   - Handles real-time chat communication
+   - Integrates with OpenAI's API
+   - Manages chat history and context
 
-To learn more about Next.js, take a look at the following resources:
+2. **Tool Calling API** (`/api/tool-calling`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - Manages AI tool integrations
+   - Handles tool execution and responses
+   - Provides tool registration and discovery
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Object Usage API** (`/api/use-object`)
+   - Handles object manipulation requests
+   - Manages state transformations
+   - Processes object-related operations
 
-## Deploy on Vercel
+### Component Library
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project includes a comprehensive set of UI components:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Core UI Components** (`/components/ui/`)
+
+   - `avatar.tsx`: User profile picture component with fallback
+   - `button.tsx`: Customizable button with variants
+   - `card.tsx`: Container component for content organization
+   - `input.tsx`: Form input with validation support
+   - `scroll-area.tsx`: Custom scrollable container
+   - `separator.tsx`: Visual divider component
+
+2. **Chat Components** (`/components/chat/`)
+   - Chat interface components
+   - Message bubbles
+   - Chat input and controls
