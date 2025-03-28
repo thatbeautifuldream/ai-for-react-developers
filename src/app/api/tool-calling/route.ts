@@ -1,0 +1,29 @@
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+
+export const maxDuration = 30;
+
+export async function POST(req: Request, res: Response) {
+  const { messages } = await req.json();
+
+  const response = await streamText({
+    model: openai.responses("gpt-4o-mini"),
+    system: `You are a helpful AI assistant that can search the web for real-time information.
+When asked questions, use the web_search_preview tool to find relevant and up-to-date information.
+Always cite your sources when providing information from web searches.
+Keep your responses concise and focused on the user's query.`,
+    tools: {
+      web_search_preview: openai.tools.webSearchPreview({
+        searchContextSize: "high",
+        userLocation: {
+          type: "approximate",
+          city: "Bangalore, Karnataka",
+          region: "India",
+        },
+      }),
+    },
+    messages,
+  });
+
+  return response.toDataStreamResponse();
+}
