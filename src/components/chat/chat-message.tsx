@@ -18,7 +18,7 @@ export function ChatMessage({ message }: TChatMessageProps) {
             isUser ? "bg-primary" : "bg-secondary"
           }`}
         >
-          {isUser ? <span className="text-white">U</span> : "AI"}
+          {isUser ? <span className="text-primary-foreground">U</span> : "AI"}
         </div>
       </Avatar>
       <div

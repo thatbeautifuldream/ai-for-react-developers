@@ -4,12 +4,18 @@ import { ChatMessage } from "./chat-message";
 
 type TChatMessageListProps = {
   messages: Message[];
+  error?: Error | null;
 };
 
-export function ChatMessageList({ messages }: TChatMessageListProps) {
+export function ChatMessageList({ messages, error }: TChatMessageListProps) {
   return (
     <div className="space-y-4">
       <AnimatePresence>
+        {error && (
+          <div className="mb-4">
+            An error occurred while generating response. Please try again.
+          </div>
+        )}
         {messages.map((message) => (
           <motion.div
             key={message.id}

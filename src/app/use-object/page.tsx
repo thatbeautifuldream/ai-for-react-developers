@@ -5,14 +5,14 @@ import { Projects, projectSchema } from "../api/use-object/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send } from "lucide-react";
+import { Send, StopCircle } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ProjectChat() {
   const [input, setInput] = useState("");
-  const { object, submit, isLoading } = useObject<Projects>({
+  const { object, submit, isLoading, stop, error } = useObject<Projects>({
     api: "/api/use-object",
     schema: projectSchema,
   });
@@ -37,6 +37,12 @@ export default function ProjectChat() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
               >
+                {error && (
+                  <div className="mb-4">
+                    An error occurred while generating projects. Please try
+                    again.
+                  </div>
+                )}
                 <Card>
                   <CardHeader>
                     <CardTitle>{project?.name}</CardTitle>
@@ -72,6 +78,11 @@ export default function ProjectChat() {
             className="flex-1"
             disabled={isLoading}
           />
+          {isLoading && (
+            <Button variant="destructive" onClick={() => stop()}>
+              <StopCircle className="h-4 w-4" />
+            </Button>
+          )}
           <Button type="submit" disabled={isLoading}>
             <Send className="h-4 w-4 mr-2" />
             Send
