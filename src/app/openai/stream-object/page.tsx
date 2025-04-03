@@ -1,7 +1,7 @@
 "use client";
 
 import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { Projects, projectSchema } from "../api/use-object/schema";
+import { Projects, projectSchema } from "../../api/openai/stream-object/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ProjectChat() {
   const [input, setInput] = useState("");
   const { object, submit, isLoading, stop, error } = useObject<Projects>({
-    api: "/api/use-object",
+    api: "/api/openai/stream-object",
     schema: projectSchema,
   });
 

@@ -22,7 +22,7 @@ export default function Page() {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/google/generate-text", {
+      const response = await fetch("/api/openai/generate-text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

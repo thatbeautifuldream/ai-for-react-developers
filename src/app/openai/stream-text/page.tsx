@@ -1,5 +1,5 @@
 import { Chat } from "@/components/chat";
 
 export default function Home() {
-  return <Chat api="/api/chat" />;
+  return <Chat api="/api/openai/stream-text" />;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChatMessageInput } from "@/components/chat/chat-message-input";
-import { ChatMessageList } from "@/components/chat/chat-message-list";
+import { ChatMessageList, Source } from "@/components/chat/chat-message-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 
@@ -14,6 +14,7 @@ type TMessage = {
 export default function Page() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<TMessage[]>([]);
+  const [sources, setSources] = useState<Source[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -46,6 +47,8 @@ export default function Page() {
           id: crypto.randomUUID(),
         },
       ]);
+
+      setSources(data.sources);
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("Failed to generate response")
@@ -78,7 +81,7 @@ export default function Page() {
     <div className="flex flex-col h-screen max-w-2xl mx-auto">
       <div className="flex-1 flex flex-col h-full relative">
         <ScrollArea className="flex-1 p-4 h-[calc(100vh-100px)]">
-          <ChatMessageList messages={messages} error={error} />
+          <ChatMessageList messages={messages} error={error} sources={sources} />
         </ScrollArea>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-secondary to-transparent pointer-events-none" />
         <div className="sticky bottom-0 p-4 bg-background">

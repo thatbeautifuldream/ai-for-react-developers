@@ -1,17 +1,15 @@
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
-
-export const maxDuration = 30;
 
 export async function POST(req: Request, res: Response) {
   const { messages } = await req.json();
 
   const response = await generateText({
-    model: openai("gpt-4o-mini"),
-    system:
-      "You are a helpful assistant that provides information about my best projects and experiences.",
+    model: google("gemini-2.0-flash-exp", { useSearchGrounding: true }),
     messages,
   });
+
+  console.log({ response });
 
   return Response.json(response);
 }
