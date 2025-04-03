@@ -9,7 +9,5 @@ export async function POST(req: Request) {
     messages,
   });
 
-  console.log({ response });
-
   return Response.json(response);
 }
