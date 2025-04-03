@@ -3,8 +3,13 @@ import { Avatar } from "@/components/ui/avatar";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+type TChatExtraMessage = {
+  files?: Array<{ mimeType: string; base64Data: string }>;
+  sources?: Array<{ id: string, url: string, title: string }>;
+};
+
 type TChatMessageProps = {
-  message: Message & { files?: Array<{ mimeType: string; base64Data: string }>, sources?: Array<{ id: string, url: string, title: string }> };
+  message: Message & TChatExtraMessage;
 };
 
 export function ChatMessage({ message }: TChatMessageProps) {
