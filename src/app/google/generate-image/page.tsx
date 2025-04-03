@@ -1,7 +1,7 @@
 "use client";
 
 import { ChatMessageInput } from "@/components/chat/chat-message-input";
-import { ChatMessageList, Source } from "@/components/chat/chat-message-list";
+import { ChatMessageList } from "@/components/chat/chat-message-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 
@@ -13,12 +13,12 @@ type TMessage = {
     mimeType: string;
     base64Data: string;
   }>;
+  sources?: Array<{ id: string, url: string, title: string }>;
 };
 
 export default function Page() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<TMessage[]>([]);
-  const [sources, setSources] = useState<Source[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -53,8 +53,6 @@ export default function Page() {
           id: crypto.randomUUID(),
         },
       ]);
-
-      setSources(data.sources);
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("Failed to generate response")

@@ -3,8 +3,6 @@ import { Avatar } from "@/components/ui/avatar";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-
-
 type TChatMessageProps = {
   message: Message & { files?: Array<{ mimeType: string; base64Data: string }>, sources?: Array<{ id: string, url: string, title: string }> };
 };
@@ -36,6 +34,7 @@ export function ChatMessage({ message }: TChatMessageProps) {
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             {message.files.map((file, index) => (
               <div key={index} className="relative w-full aspect-square rounded-lg overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={`data:${file.mimeType};base64,${file.base64Data}`}
                   alt={`Generated image ${index + 1}`}

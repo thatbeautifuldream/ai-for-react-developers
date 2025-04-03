@@ -1,9 +1,9 @@
 import { openai } from "@ai-sdk/openai";
-import { generateText, streamText } from "ai";
+import { streamText } from "ai";
 
 export const maxDuration = 30;
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const { messages } = await req.json();
 
   const response = await streamText({
