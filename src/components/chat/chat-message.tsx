@@ -1,4 +1,4 @@
-import { Message } from "@ai-sdk/react";
+import { ChatMessage as ChatMessageType } from "@/store/chat-store";
 import { Avatar } from "@/components/ui/avatar";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -9,7 +9,7 @@ type TChatExtraMessage = {
 };
 
 type TChatMessageProps = {
-  message: Message & TChatExtraMessage;
+  message: ChatMessageType & TChatExtraMessage;
 };
 
 export function ChatMessage({ message }: TChatMessageProps) {

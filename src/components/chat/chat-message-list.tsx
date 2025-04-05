@@ -1,9 +1,11 @@
-import { Message } from "@ai-sdk/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChatMessage } from "./chat-message";
+import { ChatMessage as ChatMessageType } from "@/store/chat-store";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 type TChatMessageListProps = {
-  messages: Message[];
+  messages: ChatMessageType[];
   error?: Error | null;
 };
 
@@ -12,9 +14,20 @@ export function ChatMessageList({ messages, error }: TChatMessageListProps) {
     <div className="space-y-4">
       <AnimatePresence>
         {error && (
-          <div className="mb-4">
-            An error occurred while generating response. Please try again.
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {error.message || "An error occurred while generating response. Please try again."}
+              </AlertDescription>
+            </Alert>
+          </motion.div>
         )}
         {messages.map((message) => (
           <motion.div
