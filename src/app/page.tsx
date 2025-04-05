@@ -1,95 +1,62 @@
 "use client";
 
-import { ChatMessageInput } from "@/components/chat/chat-message-input";
-import { ChatMessageList } from "@/components/chat/chat-message-list";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
-
-type TMessage = {
-  role: "user" | "assistant";
-  content: string;
-  id: string;
-};
+import { useChatStore } from "@/store/chat-store";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Page() {
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<TMessage[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const { examples, clearMessages } = useChatStore();
 
-  async function generateText(input: string) {
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      const response = await fetch("/api/google/generate-text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [...messages, { role: "user", content: input }],
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        {
-          role: "assistant",
-          content: data.text,
-          id: crypto.randomUUID(),
-        },
-      ]);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err : new Error("Failed to generate response")
-      );
-      console.error("Error generating text:", err);
-    } finally {
-      setIsLoading(false);
+  // Group examples by provider
+  const examplesByProvider = examples.reduce((acc, example) => {
+    if (!acc[example.provider]) {
+      acc[example.provider] = [];
     }
-  }
+    acc[example.provider].push(example);
+    return acc;
+  }, {} as Record<string, typeof examples>);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (input.trim()) {
-      const userMessage = {
-        role: "user" as const,
-        content: input.trim(),
-        id: crypto.randomUUID(),
-      };
-      setMessages((currentMessages) => [...currentMessages, userMessage]);
-      generateText(input.trim());
-      setInput("");
-    }
-  }
-
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setInput(e.target.value);
-  }
+  // Ensure messages are cleared when arriving at the home page
+  useEffect(() => {
+    clearMessages();
+  }, [clearMessages]);
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto">
-      <div className="flex-1 flex flex-col h-full relative">
-        <ScrollArea className="flex-1 p-4 h-[calc(100vh-100px)]">
-          <ChatMessageList messages={messages} error={error} />
-        </ScrollArea>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-secondary to-transparent pointer-events-none" />
-        <div className="sticky bottom-0 p-4 bg-background">
-          <ChatMessageInput
-            isLoading={isLoading}
-            onStop={() => { }}
-            value={input}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-          />
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 md:py-12">
+      <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">AI for React Developers</h1>
+        <p className="text-lg sm:text-xl text-muted-foreground">
+          Explore different AI providers and their capabilities
+        </p>
+      </div>
+
+      <div className="space-y-10 sm:space-y-12">
+        {Object.entries(examplesByProvider).map(([provider, providerExamples]) => (
+          <section key={provider} className="space-y-4 sm:space-y-6">
+            <h2 className="text-xl sm:text-2xl font-bold capitalize border-b pb-2">{provider}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {providerExamples.map((example) => (
+                <Card key={example.id} className="h-full flex flex-col">
+                  <CardHeader>
+                    <CardTitle className="text-lg sm:text-xl">{example.name}</CardTitle>
+                    <CardDescription className="line-clamp-2">{example.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col flex-1 justify-between gap-4">
+                    <div className="text-sm text-muted-foreground">
+                      <strong>Supports models:</strong>{" "}
+                      {example.supportsModels.join(", ")}
+                    </div>
+                    <Link href={`/${example.provider}/${example.apiType}`} className="w-full">
+                      <Button className="w-full mt-2">Try it</Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   );
