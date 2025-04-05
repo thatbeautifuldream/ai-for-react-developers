@@ -8,7 +8,10 @@ This project is a modern Next.js application that demonstrates AI integration an
 
 - **Framework**: Next.js 15.2.4 with React 19
 - **Styling**: TailwindCSS with custom animations
-- **AI Integration**: OpenAI SDK integration (@ai-sdk/openai, @ai-sdk/react)
+- **AI Integration**:
+  - Vercel AI SDK integration (`ai` package)
+  - Multiple provider SDKs (@ai-sdk/openai, @ai-sdk/google, @ai-sdk/groq)
+  - React-specific hooks (@ai-sdk/react)
 - **UI Components**:
   - Radix UI primitives for accessible components
   - Framer Motion for animations
@@ -17,8 +20,45 @@ This project is a modern Next.js application that demonstrates AI integration an
 
 ### Key Features
 
-- **Chat Interface**: Real-time AI chat functionality
-- **Tool Calling**: Demonstration of AI tool integration
-- **Object Usage Examples**: Showcases object manipulation with AI
+- **Multi-Model Support**: Integration with multiple AI providers:
+
+  - **OpenAI**: GPT-3.5 Turbo, GPT-4, GPT-4 Turbo
+  - **Google AI**: Gemini Pro, Gemini 1.5 Pro, Gemini Pro Vision
+  - **Groq**: Llama2-70B, Mixtral-8x7B
+
+- **Advanced AI Capabilities**:
+
+  - **Text Generation**: Basic completion for all supported models
+  - **Streaming Responses**: Real-time text streaming for interactive UIs
+  - **Structured Data**: Stream typed objects with schema validation
+  - **Tool Calling**: Function calling with OpenAI models
+  - **Image Generation**: Create images using Gemini Pro Vision
+
+- **Vercel AI SDK Features**:
+
+  - Streaming UI components with React suspense
+  - Type-safe schema validation with Zod
+  - Standardized API interfaces across providers
+  - Edge runtime support for optimal performance
+
 - **Modern UI**: Responsive design with Tailwind CSS
-- **API Routes**: Backend API implementation in Next.js
+- **API Routes**: Comprehensive API implementation showcasing different AI capabilities
+
+## Getting Started
+
+```bash
+pnpm install
+pnpm run dev
+```
+
+Visit `http://localhost:3000` to explore the application.
+
+## API Structure
+
+Each AI provider has dedicated API routes demonstrating different capabilities:
+
+- `/api/{provider}/generate-text` - Basic text generation
+- `/api/{provider}/stream-text` - Streaming text responses
+- `/api/{provider}/stream-object` - Structured data streaming
+- `/api/openai/tool-calling` - Function calling with OpenAI
+- `/api/google/generate-image` - Image generation with Google AI
