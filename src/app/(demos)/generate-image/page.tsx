@@ -2,10 +2,10 @@
 
 import { ChatImage } from "@/components/chat/chat-image";
 import { ChatMessageInput } from "@/components/chat/chat-message-input";
-import { ChatMessageList } from "@/components/chat/chat-message-list";
+import DemoHeader from "@/components/demo-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAIStore } from "@/store/ai-store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type TImageGeneration = {
   id: string;
@@ -18,6 +18,11 @@ type TImageGeneration = {
 export default function Page() {
   const [prompt, setPrompt] = useState("");
   const [generations, setGenerations] = useState<TImageGeneration[]>([]);
+  const { onlyEnableProviders } = useAIStore()
+
+  useEffect(() => {
+    onlyEnableProviders(["openai"])
+  }, [onlyEnableProviders])
 
   async function generateImage(prompt: string) {
     const generationId = crypto.randomUUID();
@@ -73,33 +78,38 @@ export default function Page() {
     setPrompt(e.target.value);
   }
 
+
+
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto">
-      <div className="flex-1 flex flex-col h-full relative">
-        <ScrollArea className="flex-1 p-4 h-[calc(100vh-100px)]">
-          <div className="space-y-4">
-            {generations.map((generation) => (
-              <ChatImage
-                key={generation.id}
-                prompt={generation.prompt}
-                image={generation.image}
-                error={generation.error}
-                isLoading={generation.isLoading}
-              />
-            ))}
+    <>
+      <DemoHeader title="Generate Image" />
+      <div className="flex flex-col h-screen max-w-2xl mx-auto">
+        <div className="flex-1 flex flex-col h-full relative">
+          <ScrollArea className="flex-1 p-4 h-[calc(100vh-100px)]">
+            <div className="space-y-4">
+              {generations.map((generation) => (
+                <ChatImage
+                  key={generation.id}
+                  prompt={generation.prompt}
+                  image={generation.image}
+                  error={generation.error}
+                  isLoading={generation.isLoading}
+                />
+              ))}
+            </div>
+          </ScrollArea>
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-secondary to-transparent pointer-events-none" />
+          <div className="sticky bottom-0 p-4 bg-background">
+            <ChatMessageInput
+              isLoading={generations.some(gen => gen.isLoading)}
+              onStop={() => { }}
+              value={prompt}
+              onChange={handleInputChange}
+              onSubmit={handleSubmit}
+            />
           </div>
-        </ScrollArea>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-secondary to-transparent pointer-events-none" />
-        <div className="sticky bottom-0 p-4 bg-background">
-          <ChatMessageInput
-            isLoading={generations.some(gen => gen.isLoading)}
-            onStop={() => { }}
-            value={prompt}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-          />
         </div>
       </div>
-    </div>
+    </>
   );
 }

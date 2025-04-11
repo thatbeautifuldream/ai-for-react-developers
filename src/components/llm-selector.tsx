@@ -15,9 +15,20 @@ import Groq from "./icons/groq"
 import OpenAI from "./icons/openai"
 import Anthropic from "./icons/anthropic"
 import XAI from "./icons/xai"
+import { useEffect } from "react"
 
 export default function LLMSelector() {
-    const { selectedProvider, setSelectedProvider } = useAIStore()
+    const { selectedProvider, setSelectedProvider, enabledProviders } = useAIStore()
+
+    // If the selected provider becomes disabled, switch to the first enabled provider
+    useEffect(() => {
+        if (!enabledProviders[selectedProvider]) {
+            const firstEnabledProvider = LLM_PROVIDERS.find(provider => enabledProviders[provider])
+            if (firstEnabledProvider) {
+                setSelectedProvider(firstEnabledProvider)
+            }
+        }
+    }, [selectedProvider, enabledProviders, setSelectedProvider])
 
     const handleValueChange = (newValue: TLLMProvider) => {
         setSelectedProvider(newValue)
@@ -52,7 +63,11 @@ export default function LLMSelector() {
             <DropdownMenuContent>
                 <DropdownMenuGroup>
                     {LLM_PROVIDERS.map((provider) => (
-                        <DropdownMenuItem key={provider} onClick={() => handleValueChange(provider)}>
+                        <DropdownMenuItem
+                            key={provider}
+                            onClick={() => handleValueChange(provider)}
+                            disabled={!enabledProviders[provider]}
+                        >
                             {getLLMProviderIcon(provider)}
                             <span className="truncate">{provider.charAt(0).toUpperCase() + provider.slice(1)}</span>
                         </DropdownMenuItem>
