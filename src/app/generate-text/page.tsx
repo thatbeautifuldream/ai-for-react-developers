@@ -3,17 +3,13 @@
 import { ChatMessageInput } from "@/components/chat/chat-message-input";
 import { ChatMessageList } from "@/components/chat/chat-message-list";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAIStore } from "@/store/ai-store";
 import { useState } from "react";
 
 type TMessage = {
   role: "user" | "assistant";
   content: string;
   id: string;
-  files?: Array<{
-    mimeType: string;
-    base64Data: string;
-  }>;
-  sources?: Array<{ id: string, url: string, title: string }>;
 };
 
 export default function Page() {
@@ -21,13 +17,14 @@ export default function Page() {
   const [messages, setMessages] = useState<TMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const { selectedProvider } = useAIStore();
 
   async function generateText(input: string) {
     try {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch("/api/google/generate-image", {
+      const response = await fetch(`/api/${selectedProvider}/generate-text`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,8 +45,6 @@ export default function Page() {
         {
           role: "assistant",
           content: data.text,
-          files: data.files,
-          sources: data.sources,
           id: crypto.randomUUID(),
         },
       ]);

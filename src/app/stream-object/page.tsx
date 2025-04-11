@@ -1,7 +1,7 @@
 "use client";
 
 import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { Projects, projectSchema } from "../../api/openai/stream-object/schema";
+import { Projects, projectSchema } from "../api/openai/stream-object/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,11 +9,13 @@ import { Send, StopCircle } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useAIStore } from "@/store/ai-store";
 export default function ProjectChat() {
   const [input, setInput] = useState("");
+  const { selectedProvider } = useAIStore();
+
   const { object, submit, isLoading, stop, error } = useObject<Projects>({
-    api: "/api/openai/stream-object",
+    api: `/api/${selectedProvider}/stream-object`,
     schema: projectSchema,
   });
 

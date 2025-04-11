@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google";
+import { xai } from "@ai-sdk/xai";
 import { streamObject } from "ai";
 import { projectSchema } from "./schema";
 
@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const context = await req.json();
 
   const result = streamObject({
-    model: google("gemini-2.0-flash-exp"),
+    model: xai("grok-2-1212"),
     schema: projectSchema,
     system: `
     You are a JSON generator that ONLY outputs valid JSON according to the provided schema.
