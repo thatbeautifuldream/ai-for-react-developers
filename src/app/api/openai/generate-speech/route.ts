@@ -2,12 +2,12 @@ import { experimental_generateSpeech as generateSpeech } from "ai";
 import { openai } from "@ai-sdk/openai";
 
 export async function POST(req: Request) {
-  const { text } = await req.json();
+  const { text, voice = "nova" } = await req.json();
 
   const result = await generateSpeech({
     model: openai.speech("tts-1"),
     text: text,
-    voice: "alloy",
+    voice: voice,
   });
 
   console.log(result);
