@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const context = await req.json();
 
   const result = streamObject({
-    model: openai("gpt-4o-mini"),
+    model: openai("gpt-4.1-nano"),
     schema: projectSchema,
     system: `
     You are a JSON generator that ONLY outputs valid JSON according to the provided schema.
