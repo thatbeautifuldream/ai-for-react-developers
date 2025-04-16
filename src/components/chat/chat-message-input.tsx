@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Send, StopCircle, Wand2, Undo } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAIStore } from "@/store/ai-store";
+import { motion, AnimatePresence } from "motion/react";
 
 type TChatMessageInputProps = {
   value: string;
@@ -91,32 +92,48 @@ export function ChatMessageInput({
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
           {value.trim() && !isLoading && (
-            <>
+            <AnimatePresence mode="wait">
               {showUndo ? (
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  onClick={handleUndoEnhancement}
-                  className="h-8 w-8"
-                  title="Undo enhancement"
+                <motion.div
+                  key="undo"
+                  initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Undo className="h-4 w-4" />
-                </Button>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleUndoEnhancement}
+                    className="h-8 w-8"
+                    title="Undo enhancement"
+                  >
+                    <Undo className="h-4 w-4" />
+                  </Button>
+                </motion.div>
               ) : (
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  onClick={handleEnhancePrompt}
-                  disabled={isEnhancing}
-                  className="h-8 w-8"
-                  title="Enhance prompt"
+                <motion.div
+                  key="enhance"
+                  initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <Wand2 className={cn("h-4 w-4", isEnhancing && "animate-pulse")} />
-                </Button>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleEnhancePrompt}
+                    disabled={isEnhancing}
+                    className="h-8 w-8"
+                    title="Enhance prompt"
+                  >
+                    <Wand2 className={cn("h-4 w-4", isEnhancing && "animate-pulse")} />
+                  </Button>
+                </motion.div>
               )}
-            </>
+            </AnimatePresence>
           )}
           {isLoading ? (
             <Button
