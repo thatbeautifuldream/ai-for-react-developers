@@ -83,7 +83,10 @@ export function ChatMessageInput({
           value={value}
           onChange={onChange}
           placeholder="Type your message..."
-          className="min-h-[80px] resize-none pr-24 pb-10"
+          className={cn(
+            "min-h-[80px] resize-none pr-24 pb-10",
+            isEnhancing && "animate-pulse"
+          )}
           disabled={isLoading}
         />
         <div className="absolute bottom-2 right-2 flex items-center gap-2">
